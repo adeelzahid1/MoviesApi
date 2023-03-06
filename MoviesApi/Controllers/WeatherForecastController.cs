@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MoviesApi.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,21 @@ namespace MoviesApi.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly InMemoryRepository repository;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, InMemoryRepository repository)
         {
             _logger = logger;
+            this.repository = repository;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+           
+            repository.getGenres(); 
+
+
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
