@@ -1,55 +1,57 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using MoviesApi.Entities;
-using MoviesApi.Services;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MoviesApi.Controllers
 {
     //[Route("api/[controller]")]
     [Route("api/genre")]
-    public class GenresController
+    public class GenresController : Controller
     {
-        private readonly IRepository repository;
+        //private readonly IRepository repository;
 
-        public GenresController(IRepository repository)
+        public GenresController()
         {
-            this.repository = repository;
+            //this.repository = repository;
         }
 
         [HttpGet]
         [Route("api/genre/GetGenres")]
-        public List<Genre> GetGenres()
+        public async Task<ActionResult<List<Genre>>> GetGenres()
         {
-            return repository.getGenres();
-        }
+            return new List<Genre>() { new Genre() {Id=1, Name="Movies" }, };
+            //throw new NotImplementedException();
 
+        }
+ 
         [HttpGet]
         [Route("api/genre/GetGenre/{id:int}")]
-        public Genre GetGenre(int id)
+        public ActionResult<Genre> GetGenre(int id)
         {
-            var genre = repository.getGenre(id);
-            if(genre is null) { }
-            return genre;
+            
+            throw new NotImplementedException();
         }
 
         [HttpPost]
-        public void SaveGenre()
+        public ActionResult SaveGenre()
         {
-
+            throw new NotImplementedException();
         }
 
         [HttpPut]
-        public void UpdateGenre()
+        public ActionResult UpdateGenre()
         {
-
+            throw new NotImplementedException();
         }
 
         [HttpDelete]
         [Route("api/genre/DeleteGenre")]
-        public void DeleteGenre()
+        public ActionResult DeleteGenre()
         {
-
+            throw new NotImplementedException();
         }
 
 
