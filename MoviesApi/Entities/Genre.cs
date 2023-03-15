@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MoviesApi.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace MoviesApi.Entities
 {
@@ -9,7 +10,7 @@ namespace MoviesApi.Entities
 
         [Required(ErrorMessage = "The {0} Field is Required")]
         [StringLength(50)]
-        
+        [FirstLetterCapital]
         public string Name { get; set; }
 
     }
