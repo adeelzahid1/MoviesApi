@@ -9,6 +9,7 @@ namespace MoviesApi.Validation
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             //var genre = (Genre)validationContext.ObjectInstance;
+            
             //if ( value is null || string.IsNullOrEmpty(value.ToString() ))
 
 

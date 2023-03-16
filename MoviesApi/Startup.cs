@@ -27,7 +27,16 @@ namespace MoviesApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(options => {
+                options.AddDefaultPolicy(builder =>
+                {
+                    var angularURL = Configuration.GetValue<string>("angular_URL");
+                    builder.
+                    WithOrigins(angularURL).
+                    AllowAnyMethod().
+                    AllowAnyHeader();
+                });
+            });
             services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
             services.AddSwaggerGen(c =>
@@ -49,6 +58,8 @@ namespace MoviesApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

@@ -23,7 +23,7 @@ namespace MoviesApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/genre/GetGenres")]
+        [Route("GetGenres")]
         public async Task<ActionResult<List<Genre>>> GetGenres()
         {
             int id = 0;
