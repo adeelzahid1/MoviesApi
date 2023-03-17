@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using MoviesApi.Entities;
 using System;
 using System.Collections;
@@ -15,10 +16,13 @@ namespace MoviesApi.Controllers
     [Route("api/genre")]
     public class GenresController : Controller
     {
+        private readonly ApplicationDbContext context;
+
         //private readonly IRepository repository;
 
-        public GenresController()
+        public GenresController(ApplicationDbContext context)
         {
+            this.context = context;
             //this.repository = repository;
         }
 
@@ -27,7 +31,6 @@ namespace MoviesApi.Controllers
         public async Task<ActionResult<List<Genre>>> GetGenres()
         {
             int id = 0;
-            //var myNumberList = new List<int> [1, 2, 3, 5, 6];
             int[] myNumberList = Enumerable.Range(1, 21).ToArray();
 
             foreach (var item in myNumberList)
@@ -37,8 +40,7 @@ namespace MoviesApi.Controllers
                     id = id + item;
                 }
             }
-            return new List<Genre>() { new Genre() {Id=id, Name="Movies" }, };
-            //throw new NotImplementedException();
+            return await context.Genres.ToListAsync();
 
         }
  
@@ -46,14 +48,16 @@ namespace MoviesApi.Controllers
         [Route("api/genre/GetGenre/{id:int}")]
         public ActionResult<Genre> GetGenre(int id)
         {
-            
             throw new NotImplementedException();
         }
 
         [HttpPost]
-        public ActionResult SaveGenre()
+        [Route("SaveGenre")]
+        public async Task<ActionResult> SaveGenre([FromBody] Genre genre)
         {
-            throw new NotImplementedException();
+            context.Genres.Add(genre);
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
         [HttpPut]
