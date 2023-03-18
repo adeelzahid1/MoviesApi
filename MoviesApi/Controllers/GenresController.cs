@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using MoviesApi.DTOs;
 using MoviesApi.Entities;
 using System;
 using System.Collections;
@@ -14,21 +16,24 @@ namespace MoviesApi.Controllers
 {
     //[Route("api/[controller]")]
     [Route("api/genre")]
+    [ApiController]
     public class GenresController : Controller
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
         //private readonly IRepository repository;
 
-        public GenresController(ApplicationDbContext context)
+        public GenresController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
             //this.repository = repository;
         }
 
         [HttpGet]
         [Route("GetGenres")]
-        public async Task<ActionResult<List<Genre>>> GetGenres()
+        public async Task<ActionResult<List<GenreDto>>> GetGenres()
         {
             int id = 0;
             int[] myNumberList = Enumerable.Range(1, 21).ToArray();
@@ -40,7 +45,8 @@ namespace MoviesApi.Controllers
                     id = id + item;
                 }
             }
-            return await context.Genres.ToListAsync();
+                var genres = context.Genres.ToListAsync();
+                return mapper.Map<List<GenreDto>>(genres);      
 
         }
  
@@ -55,6 +61,10 @@ namespace MoviesApi.Controllers
         [Route("SaveGenre")]
         public async Task<ActionResult> SaveGenre([FromBody] Genre genre)
         {
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
             context.Genres.Add(genre);
             await context.SaveChangesAsync();
             return NoContent();

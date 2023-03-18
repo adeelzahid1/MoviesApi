@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,9 @@ namespace MoviesApi
                     AllowAnyHeader();
                 });
             });
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
             services.AddSwaggerGen(c =>
