@@ -109,13 +109,17 @@ namespace MoviesApi.Controllers
 
         [HttpDelete]
         [Route("DeleteGenre/{id:int}")]
-        public ActionResult DeleteGenre()
+        public async Task<ActionResult> DeleteGenre(int id)
         {
-            throw new NotImplementedException();
+            var genre = await context.Genres.FirstOrDefaultAsync(x => x.Id == id);
+            if (genre is null)
+                return NotFound();
+
+            context.Remove(genre);
+            await context.SaveChangesAsync();
+            return NoContent();
+            }
+
         }
 
-
-
-
-    }
 }
