@@ -76,11 +76,11 @@ namespace MoviesApi.Controllers
             return NoContent();
         }
 
-        [HttpPut]
-        public ActionResult UpdateGenre()
-        {
-            throw new NotImplementedException();
-        }
+        //[HttpPut]
+        //public ActionResult UpdateGenre()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
 
         [HttpPut]
