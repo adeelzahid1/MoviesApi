@@ -9,6 +9,7 @@ namespace MoviesApi.Helpers
         public AutoMapperProfile()
         {
             CreateMap<GenreDto, Genre>().ReverseMap();
+            CreateMap<GenreCreationDto, Genre>();
         }
     }
 }
