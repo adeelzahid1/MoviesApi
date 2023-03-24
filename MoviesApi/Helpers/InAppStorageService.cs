@@ -43,7 +43,7 @@ namespace MoviesApi.Helpers
         public async Task<string> SaveFile(string containerNmae, IFormFile file)
         {
             var extension = Path.GetExtension(file.FileName);
-            var fileName = $"{Guid.NewGuid()} {extension}";
+            var fileName = $"{Guid.NewGuid()}{extension}";
             string folder = Path.Combine(env.WebRootPath, containerNmae);
             if (!Directory.Exists(folder))
             {
@@ -57,7 +57,7 @@ namespace MoviesApi.Helpers
                 await File.WriteAllBytesAsync(route, content);
             }
 
-            var url = $"{httpContextAccessor.HttpContext.Request.Scheme}:// {httpContextAccessor.HttpContext.Request.Host}";
+            var url = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
 
             var routeForDb = Path.Combine(url, containerNmae, fileName).Replace("\\", "/") ;
             return routeForDb;

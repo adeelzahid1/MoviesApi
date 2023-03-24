@@ -69,9 +69,22 @@ namespace MoviesApi.Controllers
 
         [HttpPut]
         [Route("UpdateActor/{id:int}")]
-        public async Task<ActionResult> UpdateActor(int id, [FromBody] ActorCreationDto actorCreationDto)
+        public async Task<ActionResult> UpdateActor(int id, [FromForm] ActorCreationDto actorCreationDto)
         {
-            throw new NotImplementedException();
+           
+            var actor = await context.Actors.FirstOrDefaultAsync(x => x.Id == id);
+            if(actor is null)
+            {
+                return NotFound();
+            }
+            actor = mapper.Map(actorCreationDto, actor);
+            if (actorCreationDto.Picture is not null)
+            {
+                actor.Picture = await fileStorageService.EditFile(containerName, actorCreationDto.Picture, actor.Picture);
+            }
+
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
         [HttpDelete]
@@ -84,6 +97,8 @@ namespace MoviesApi.Controllers
 
             context.Remove(actor);
             await context.SaveChangesAsync();
+
+            await fileStorageService.DeleteFile(actor.Picture, containerName); 
 
             return NoContent();
         }
