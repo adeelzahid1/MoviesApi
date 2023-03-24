@@ -41,7 +41,8 @@ namespace MoviesApi
                     builder.
                     WithOrigins(angularURL).
                     AllowAnyMethod().
-                    AllowAnyHeader();
+                    AllowAnyHeader().
+                    WithExposedHeaders(new string[] { "totalAmountOfRecord" });
                 });
             });
 
