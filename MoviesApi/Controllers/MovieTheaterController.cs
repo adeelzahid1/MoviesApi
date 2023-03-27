@@ -35,14 +35,14 @@ namespace MoviesApi.Controllers
 
         [HttpGet]
         [Route("GetMovieTheater/{id:int}")]
-        public async Task<ActionResult<MovieTheaterCreationDto>> GetMovieTheater(int id)
+        public async Task<ActionResult<MovieTheaterDto>> GetMovieTheater(int id)
         {
             var movieTheater = await context.MovieTheaters.FirstOrDefaultAsync(x => x.Id == id);
             if (movieTheater is null)
             {
                 return NoContent();
             }
-            return mapper.Map<MovieTheaterCreationDto>(movieTheater);
+            return mapper.Map<MovieTheaterDto>(movieTheater);
         }
 
         [HttpPost]
