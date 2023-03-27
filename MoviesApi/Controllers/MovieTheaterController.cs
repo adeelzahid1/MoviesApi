@@ -34,33 +34,45 @@ namespace MoviesApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetMovieTheater/{id: int}")]
-        public async Task<ActionResult<MovieTheaterDto>> GetMovieTheater(int id)
+        [Route("GetMovieTheater/{id:int}")]
+        public async Task<ActionResult<MovieTheaterCreationDto>> GetMovieTheater(int id)
         {
             var movieTheater = await context.MovieTheaters.FirstOrDefaultAsync(x => x.Id == id);
-            if(movieTheater is null)
+            if (movieTheater is null)
             {
                 return NoContent();
             }
-            return mapper.Map<MovieTheaterDto>(movieTheater);
+            return mapper.Map<MovieTheaterCreationDto>(movieTheater);
         }
 
         [HttpPost]
         [Route("SaveMovieTheater")]
         public async Task<ActionResult> SaveMovieTheater(MovieTheaterCreationDto movieCreationDto)
         {
-            var movieTheater = mapper.Map<MovieTheater>(movieCreationDto);
-            context.Add(movieTheater);
-            await context.SaveChangesAsync();
-            return NoContent();
+            //var movieTheater = new MovieTheater();
+            //movieTheater.Name = movieCreationDto.Name;
+            //movieTheater.Location = new Point(movieCreationDto.Latitude, movieCreationDto.Longitude) { SRID = 4326 };
+            //new Point(-122.4194155, 37.7749295) { SRID = 4326 };
+            try
+            {
+                var movieTheater = mapper.Map<MovieTheater>(movieCreationDto);
+                context.Add(movieTheater);
+                await context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (System.Exception ex)
+            {
+                var exp = ex.Message;
+                throw;
+            }
         }
 
         [HttpPut]
-        [Route("UpdateMovieTheater/{id: int}")]
+        [Route("UpdateMovieTheater/{id:int}")]
         public async Task<ActionResult> UpdateMovieTheater(int id, MovieTheaterCreationDto movieCreationDto)
         {
             var movie = await context.MovieTheaters.FirstOrDefaultAsync(x => x.Id == id);
-            if(movie is null)
+            if (movie is null)
             {
                 return NoContent();
             }
@@ -71,7 +83,7 @@ namespace MoviesApi.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteMovieTheater/{id: int}")]
+        [Route("DeleteMovieTheater/{id:int}")]
         public async Task<ActionResult> DeleteMovieTheater(int id)
         {
             var movieTheater = await context.MovieTheaters.FirstOrDefaultAsync(x => x.Id == id);
@@ -95,5 +107,5 @@ namespace MoviesApi.Controllers
 
 
 
-        }
+    }
 }

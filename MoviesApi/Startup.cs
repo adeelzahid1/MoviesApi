@@ -33,23 +33,37 @@ namespace MoviesApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
+                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                     sqlOptions => sqlOptions.UseNetTopologySuite());
             });
 
-           
 
-            services.AddCors(options => {
-                options.AddDefaultPolicy(builder =>
-                {
-                    var angularURL = Configuration.GetValue<string>("angular_URL");
-                    builder.
-                    WithOrigins(angularURL).
-                    AllowAnyMethod().
-                    AllowAnyHeader().
-                    WithExposedHeaders(new string[] { "totalAmountOfRecord" });
-                });
+            //services.AddCors(options =>
+            //{
+            //    options.AddDefaultPolicy(builder =>
+            //    {
+            //        var angularURL = Configuration.GetValue<string>("angular_URL");
+            //        builder.
+            //        //WithOrigins(angularURL).
+            //        AllowAnyMethod().
+            //        AllowAnyHeader().
+            //        WithExposedHeaders(new string[] { "totalAmountOfRecord" });
+            //    });
+            //});
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllHeaders",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
             });
+
+
 
             services.AddAutoMapper(typeof(Startup));
             services.AddSingleton(provider => new MapperConfiguration(config =>
@@ -87,8 +101,14 @@ namespace MoviesApi
 
             app.UseRouting();
 
-            app.UseCors();
-
+            app.UseCors("AllowAllHeaders");
+            //// global cors policy
+            //app.UseCors(x => x
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader()
+            //    .SetIsOriginAllowed(origin => true) // allow any origin
+            //    .AllowCredentials()); // allow credentials
+             
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

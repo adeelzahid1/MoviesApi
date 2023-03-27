@@ -8,6 +8,7 @@ namespace MoviesApi.Helpers
     public class AutoMapperProfile: Profile
     {
         public AutoMapperProfile(GeometryFactory geometryFactory)
+        //public AutoMapperProfile()
         {
             CreateMap<GenreDto, Genre>().ReverseMap();
             CreateMap<GenreCreationDto, Genre>();
@@ -18,10 +19,10 @@ namespace MoviesApi.Helpers
 
             CreateMap<MovieTheater, MovieTheaterDto>()
             .ForMember(x => x.Latitude, dto => dto.MapFrom(prop => prop.Location.Y))
-            .ForMember(x => x.Latitude, dto => dto.MapFrom(prop => prop.Location.X));
+            .ForMember(x => x.Longitude, dto => dto.MapFrom(prop => prop.Location.X));
 
             CreateMap<MovieTheaterCreationDto, MovieTheater>()
-                .ForMember(x => x.Location, x => x.MapFrom( dto =>  
+                .ForMember(x => x.Location, x => x.MapFrom(dto =>
                     geometryFactory.CreatePoint(new Coordinate(dto.Longitude, dto.Latitude))
                 ));
         }
